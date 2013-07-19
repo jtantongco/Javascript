@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title></title>
+<meta name="" content="">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<style>
+	.emphasis{font-weight:bold;}
+</style>
+
+<script>
+	// li does no exist in Dom at this point in execution
+	//$('li:first-child').addClass('emphasis');
+	
+	/*
+	//To get around this use document ready:
+	$(document).ready(function(){
+		$('li:first-child').addClass('emphasis');
+	}); //This can be equivalent to:
+	
+	The next one is equivalent to above
+	*/ 
+	
+	$(function(){
+		$('li:first-child').addClass('emphasis');
+	});
+	
+</script>
+</head>
+<body>
+
+<ul>
+	<li>hello</li> <!-- -->
+	<li>hello 2</li>
+	<li>hello 3</li>
+<ul>
+
+<!--
+<script>
+	// li does exist in Dom 
+	$('li:first-child').addClass('emphasis'); will work at this point
+</script>
+-->
+</body>
+</html>
