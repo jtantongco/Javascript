@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title></title>
+<meta name="" content="">
+
+<style>
+ul li {color:red;} 
+.emphasis {color:green;}
+
+</style>
+
+</head>
+<body>
+
+<ul>
+	<li>hello</li>
+	<li>hello 2</li>
+	<li>hello 3</li>
+<ul>
+
+<!--
+<script language="javascript" type="text/javascript" src="jquery-1.10.2.js">
+</script>
+-->
+<!-- http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js for full version -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+
+loading anything else off google:
+https://developers.google.com/speed/libraries/devguide
+
+<script>
+	//var lis = jQuery('ul li');
+	//console.log(lis);
+	var lis = $('ul li');
+	//lis.css('color', 'green');
+	lis.addClass('emphasis');
+	
+	// $ = jQuery = window.jQuery
+</script>
+
+Hello there.
+</body>
+</html>
