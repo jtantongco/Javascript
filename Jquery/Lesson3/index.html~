@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title></title>
+	<style>
+	
+	.container { color: green;}
+	.emphasis {font-weight:bold;}
+	li {color:black;}
+
+	/* To illustrate difference - CSS
+	li {color: blue;}
+	ul.emphasis > li {color: red;}
+
+	ul.emphasis li {}
+		-> any li that is a descendant of ul.emphasis
+	ul.emphasis > li {}
+		-> any li that is a DIRECT descendant of ul.emphasis
+	*/
+
+	</style>
+</head>
+<body>
+
+<div class="container">
+	<h1>Welcome to My Website </h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+
+	<div class="container">
+		<ul class="emphasis container">
+			<li>item</li>
+			<li>item 2</li>
+			<li>item 3</li>
+			<li>item 4</li>
+			<li>item 5</li>
+			<li>
+				<ul>
+					<li>hello from the nest.</li>
+				</ul>
+
+			</li>
+		</ul>
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+
+<script>
+	//all direct descdendants
+	//$('ul.emphasis').children('li').css('color', 'blue');
+	
+	//all descendants (grandchildren included)
+	//$('ul.emphasis').find('li').css('color', 'blue');
+	
+	//first child:
+	//$('ul.emphasis').find('li:first').css('color', 'blue');
+
+	//last child:
+	//$('ul.emphasis').find('li:last').css('color', 'blue');
+	//$('ul.emphasis').children('li:last').css('color', 'blue');	
+
+	// css -> takes both the first and one ie all uls...
+	//$('ul.emphasis').children('li:first-child').css('color', 'blue'); 
+	//$('ul.emphasis').find('li:first-child').css('color', 'blue');
+	
+	// css arbitrary case
+	//$('ul.emphasis').find('li:nth-child(3)').css('color', 'blue') // -> doesn't seem to work on my machine
+	
+	//filtering -> same as first
+	//$('ul.emphasis').children('li').first().css('color', 'blue');
+
+	//changing the text
+	//$('ul.emphasis').children('li:nth-child(2)').text('Added with Jquery');
+
+	//eq method -> makes it so numeral system corresponds to regular programming
+	//$('ul.emphasis').children('li').eq(0).text('Added with Jquery');
+
+	//chaining next and previous 
+	var count = 1;
+	//$('ul.emphasis').children('li').eq(count).text('Current eq index');
+	$('ul.emphasis').children('li').eq(count).next().text('Next');
+	$('ul.emphasis').children('li').eq(count).prev().text('Previous');
+
+	//Simplified:
+	$('ul.emphasis li:nth-child(3)').css('color','blue');
+
+	//formatting:
+	$('ul.emphasis')
+		.children('li')
+			.eq(count).text('Current eq index');
+
+	//traversing upward and removeClass
+	//$('li').parent().removeClass('emphasis');
+	//$('li').parent('ul').removeClass('emphasis');
+	
+	//parent is only for immediate parent
+	//$('li').parent('.container').removeClass('container');
+
+	//parents -> including all grandparents
+	//$('li').parents('.container').removeClass('container');
+
+	//specific
+	//$('li').parents('div.container').removeClass('container');
+
+	//closest ->upwards traversal of DOM
+	//first for upwards?
+	console.log($('ul').parents());
+	console.log($('ul').closest());
+
+	//adding a class
+	//$('ul.emphasis').find('li:first').addCLass('emphasis');
+
+	// $('ul.emphasis')
+	// 	.children('li')
+	// 		.eq(3)
+	// 		.prev().text('added with jQuery');
+
+	// console.log($('ul').parents('.container'));
+	// console.log($('ul').closest('.container'));
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
