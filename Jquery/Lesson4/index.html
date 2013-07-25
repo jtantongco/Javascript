@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>JQuery Events</title>
+	
+	<link rel="stylesheet" href="day.css">
+</head>
+<body>
+
+<div class="container">
+	<h1>Welcome to My Website </h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<!-- custom html 5 attributes -> must have 'data-' prefix, for option 2 and 3 -->
+	<button data-file="day">Day</button>
+	
+	<button data-file="night">Night</button>
+</div>
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+-->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+<script>
+	/*
+	//global var -> bad practice
+	var someVar, myVar;
+	
+	//Self executing anonymous function
+	(function() {
+		//reference to global var
+		window.myVar = 'Boo';
+		alert(window.myVar);
+	})();
+	*/
+	
+	(function() {
+		//day/night changer -> minimizes
+		var button = $('link');
+		
+		//equivalent to the on method
+		//ie $('button').on('click', function() { ... });
+		$('button').click(function(){
+			/*
+			//console.log('Button was clicked!');
+			//console.log($(this)); //This refers to the button that was clicked
+			//wrapping this in $() makes it a Jquery object
+			
+			//$(this).text('changed');
+			
+			//stylistically better to do: -> minimizes DOM queries
+			var your_button = $(this);
+			your_button.text('changed');
+			*/
+			
+			//always change to night
+			//$('link').attr('href','night.css');
+			
+			/*
+			//Option 1 changing night and day 
+			var stylesheet = $(this).text().toLowerCase();
+			//console.log(stylesheet);
+			$('link').attr('href',stylesheet+'.css');
+			*/
+			
+			/*
+			//Option 2 
+			var stylesheet = $(this).attr('data-file');
+			//console.log(stylesheet);
+			$('link').attr('href',stylesheet+'.css');
+			*/
+			
+			/*
+			//Option 3
+			//basically the same as option 2 but more verbose
+			//jquery will handle the data part so just type in the custom attributes custom part
+			var stylesheet = $(this).data('file');
+			//console.log(stylesheet);
+			$('link').attr('href',stylesheet+'.css'); // -> Too many dom jumps
+			*/
+			
+			//Optimized, stylistic, fully implelemnted Option 3
+			//optimize the number of dom queries
+			var $this = $(this), 
+				stylesheet = $(this).data('file');
+			
+			button.attr('href',stylesheet+'.css');
+			
+			/*
+			//I think i like the below better but can combine them
+			$this
+				.siblings('button')
+				.removeAttr('disabled'); //siblings -> other elements on the same level
+			$this
+				.attr('disabled', 'disabled');
+			*/
+				
+			//Combined:
+			$this
+				.siblings('button')
+					.removeAttr('disabled') //siblings -> no children or ancestors
+					.end() // resets the context of the Jquery variable
+				.attr('disabled', 'disabled');
+			
+		});
+		
+		/*
+		$('button').hover(function(){ //triggers on both mouseOver and mouseOff
+			//console.log('Button was clicked!');
+			console.log(this); //This refers to the button that was clicked -> this is a DOM node
+		});
+		*/
+		
+	})();
+	
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

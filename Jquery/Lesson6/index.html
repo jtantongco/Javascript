@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Bind/Live/Delegate</title>
+	
+</head>
+<body>
+
+<div class="container">
+	<h1>Welcome to My Website </h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<h2>Click Me!</h2>
+	<h2>Click Me!</h2>
+</div>
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script>
+	(function(){
+		
+		//modern
+		$('h2').on('click',function(){
+		//});
+		
+		//old and it also points to .on('click', ...) as of JQuery 1.7 -> still in 1.10 though
+		//has likewise performane issue to the number ot listeners created
+		//$('h2').bind('click', function(){ 
+			console.log('clicked');
+			//var clone = $(this).clone().appendTo(document.body);
+			//Equivalent
+			//var clone = $(this).clone().appendTo('body'); //The newly cloned object does not have a listener
+			//var clone = $(this).clone(false).appendTo('body');
+			
+			var clone = $(this).clone(true).appendTo('body'); //newly cloned object will clone listener
+			
+			console.log(clone); 
+		});
+		
+		/*
+		//live paired with die -> 1 listener to whole document
+		//Removed in version 1.9
+		//Do not use -> don't worry about it much
+		$('h2', $('.container')[0]).live('click',function(){ //has event delegation
+			console.log('clicked');
+			var clone = $(this).clone().appendTo('body');
+		});
+		*/
+		
+		/*
+		//pass in the context
+		//also points to the live method -> still in 1.10
+		$('div.container').delegate('h2', 'click',function(){ //has event delegation
+			console.log('clicked');
+			//context of delegate listener is the div container so must append to .container
+			//var clone = $(this).clone().appendTo('body');
+			var clone = $(this).clone().appendTo('.container');
+		});
+		*/
+	})();
+	
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

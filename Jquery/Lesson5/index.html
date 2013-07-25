@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>JQuery Events 201</title>
+	
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+	<h1>Welcome to My Website </h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<dl>
+		<dt>What are your hours?</dt>
+		<dd>We are open 24/7.</dd>
+		<dt>What are your hours?</dt>
+		<dd>We are open 24/7.</dd>
+		<dt>What are your hours?</dt>
+		<dd>We are open 24/7.</dd>
+		<dt>What are your hours?</dt>
+		<dd>We are open 24/7.</dd>
+		<dt>What are your hours?</dt>
+		<dd>We are open 24/7.</dd>
+	</dl>
+	
+</div>
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+-->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+<script>
+(function (){
+	var dd = $('dd');
+	//filter out cause we want the first one to be expanded
+	
+	dd.filter(':nth-child(n+4)').addClass('hide');
+	//listener attached to each dt -> performance issue if Many Dts -> change to one listener to dl
+	//$('dt').on('mouseenter', function(){
+	$('dl').on('mouseenter', 'dt', function(){
+		/*
+		$(this)
+			.next()
+			.siblings('dd')
+			.hide();
+		$(this)
+			.next()
+			.show();
+		*/
+		/*
+		//Equivalent
+		$(this)
+			.next()
+				.show()
+				.siblings('dd')
+					.hide();
+		*/
+		
+		//with animation
+		$(this)
+			.next()
+				.slideDown(200)
+				.siblings('dd')
+					.slideUp(200);
+	});
+	/* Simple stuff
+	//Option 1
+	//dd.hide();
+	
+	//Option2
+	//dd.addClass('hide');
+	*/
+	
+	/* options
+	dd.hide();
+	dd.show();
+	dd.fadeIn();
+	dd.slideDown();
+	dd.toggle();
+	*/
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
