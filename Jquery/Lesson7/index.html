@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Appending Content</title>
+	<style>
+	article{
+		width: 600px;
+		margin: auto;
+	}
+	
+	blockquote.co{
+		float: right;
+		background: #e3e3e3;
+		font-size: 2em;
+		width: 35%;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+
+<article>
+	<h1>My Awesome Post</h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		<span class=co>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt <span class=co>ut labore et dolore magna aliqua.</span> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+</article>
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script>
+	(function(){
+		/*
+		// Adding content:
+		//Place text at the end
+		$('article').append('Append');
+		
+		//Place text at the beginning
+		$('article').prepend('Prepend');
+		
+		//Place at a specific point:
+		//The following two are equivalent (in this case)
+		$('h1').after('After Append');
+		$('p').first().before('First Before');
+		
+		//Adding HTML tags
+		//Equivalent but Stylistically better
+		//Passing in tags means that it will be created in the DOM
+		$('<h2 class=myClass>appendTo 1</h2>').appendTo('article');
+		//Stylistically better:
+		$('<h2></h2>', {
+			text: 'appendTo 2',
+			class: 'myClass'
+		}).appendTo('article');
+		
+		
+		$('<h2></h2>', {
+			text: 'prependTo',
+			class: 'myClass'
+		}).prependTo('article');
+		
+		//*note: cannot use after using this method, but behavior is fundamentally same
+		//use insertAfter 
+		$('<h2></h2>', {
+			text: 'insertAfter',
+			class: 'myClass'
+		}).insertAfter('h1');
+		
+		$('<h2></h2>', {
+			text: 'insertBefore',
+			class: 'myClass'
+		}).insertBefore('h1');
+		
+		//If you comment out everything else this will go before the second paragraph
+		$('<h2></h2>', {
+			text: 'insertBefore',
+			class: 'myClass'
+		}).insertBefore('p:nth-child(3)');
+		// */
+		
+		/* 
+		//Moving Content:
+		//append to on existing object will move that object
+		$('h1').appendTo('article');
+		
+		//behaves like a foreach loop!
+		$('p').after( $('h1') );
+		
+		//Get a specific element (first element)
+		$('p').eq(0).after( $('h1') );
+		
+		//Switch with the previous element -> equivalent in this case but could be different in another page
+		$('p').eq(0).after( function(){
+			return $(this).prev();
+		} );
+		
+		//
+		//can have a function in the filter as well!
+		//$('p').filter( function(){
+		//	return ... ;
+		//})
+		*/
+		
+		//for loop
+		//can also do:
+		//alternate optimizations to queries for before each (in increasing savings due to minimized search scope)
+		//var co = $('span.co')
+		//var co = $('article span.co')
+		//var co = $('article').find('span.co')
+		
+		var co = $('article').find('span.co').each(function(){
+			//Step 1: develop positioning
+			//$(this).closest('p').prepend('hi there');
+			var $this = $(this)
+			$('<blockquote></blockquote>', {
+				class: 'co',
+				text: $this.text()
+			}).prependTo( $this.closest('p') );
+		});
+	})();
+	
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
