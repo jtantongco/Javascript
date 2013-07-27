@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Slides and Structure</title>
+	<style>
+	body {
+		width: 600px;
+		margin: auto;
+		font-family: sans-serif;
+	}
+	
+	#contact {
+		background: #e3e3e3;
+		padding: 1em 2em;
+		position: relative;
+	}
+	
+	.js #contact {
+		position: absolute;
+		top: 0;
+		width: inherit;
+		display: none;
+	}
+	
+	#contact h2 { margin-top: 0; }
+
+	#contact ul { padding: 0; }
+
+	#contact li { 
+		list-style: none;
+		margin-bottom: 1em;
+	}
+	
+	/* Form inputs */
+	input, textarea { width: 100%; line-height: 2em;}
+	input[type=submit] { width: auto;  }
+	label { display: block; text-align: left; }
+	
+	/* Close button styling */
+	.close {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		font-weight: bold;
+		font-family: sans-serif;
+		cursor: pointer;
+	}
+	
+	blockquote.co{
+		float: right;
+		background: #e3e3e3;
+		font-size: 2em;
+		width: 35%;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+<article>
+	<h1>My Awesome Post</h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		<span class=co>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt <span class=co>ut labore et dolore magna aliqua.</span> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+</article>
+	
+<div id="contact">
+	<h2>Contact Me</h2>
+	<form action="#">
+		<ul>
+			<li>
+				<label for="name">Name: </label>
+				<input name="name" id="name">
+			</li>
+			<li>
+				<label for="email">Email: </label>
+				<input name="email" id="email">
+			</li>
+			<li>
+				<label for="comments">What's Up? </label>
+				<textarea name="comments" id="comments"  cols="30" rows="10"></textarea>
+			</li>
+			<li>
+				<input type="submit" value="Submit">
+			</li>
+		</ul>
+	</form>
+</div>
+	
+
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script>
+(function(){
+	var co = $('article').find('span.co').each(function(){
+		//Step 1: develop positioning
+		//$(this).closest('p').prepend('hi there');
+		var $this = $(this)
+		$('<blockquote></blockquote>', {
+			class: 'co',
+			text: $this.text()
+		}).prependTo( $this.closest('p') );
+	});
+})();
+
+//Don't indent the first level supposedly	
+(function(){
+
+$('html').addClass('js');
+//make an object called contact form with method init
+var contactForm = {
+	container: $('#contact'),
+	config: {
+		effect: 'slideToggle', //fadeToggle is another option
+		speed:  400
+	},
+	
+	init: function(config){
+		//extend(a, b) -> interp. fields that both a and b have will be given the values of b
+		//fields exclusive to a will be unchanged
+		$.extend(this.config, config); 
+	
+		$('<button></button>', {
+			text: 'Contact Me'
+		})
+			.insertAfter('article:first')
+			.on('click', this.show); // why no ()? -> delayed function evaluation!
+	},
+	
+	show: function(){ 
+		/*
+		//this in current context refers to: the button that was clicked 
+		//because this function is called on button click
+		//this.container.show(); //this is broken
+		
+		//arugment will bind the value of this for the context of call
+		contactForm.close.call(contactForm.container);
+		
+		//hard coded effect
+		//contactForm.container.show(); 
+		
+		//Configurable effect
+		contactForm.container[contactForm.config.effect](contactForm.config.speed);
+		*/
+		
+		
+		//style + optimization
+		var cf = contactForm, container = cf.container, config = cf.config;
+		//code to not do anything if already displaying
+		if(container.is(':hidden')){
+			cf.close.call(container);
+			container[config.effect](config.speed);
+		}
+	},
+	close: function(){
+		//this = #contact //contactForm object
+		var $this = $(this);
+		
+		//without conditional continuously adds span X and event listeners - code to detect and idle
+		//$this.find('span.close').length is the same as $this.find('span.close')[0]
+		if( $this.find('span.close').length ) return;
+		$('<span class=close>X</span>')
+			.prependTo(this)
+			.on('click', function (){
+				//this = span (default value of $(this) without call)
+				//$this.hide(); -> also works 
+				//(due to the the context provided by call on ine 161)
+				//however, it is confusing to keep track of the context of this
+				
+				//hard coded effect
+				//contactForm.container.hide();
+				//equivalent
+				//contactForm['container'].hide();
+				
+				//Configurable effect
+				contactForm.container[contactForm.config.effect](contactForm.config.speed);
+				//$this[contactForm.config.effect](contactForm.config.speed);
+			});
+	}
+};
+
+//if no config variables are passed in - uses the default
+contactForm.init({
+	effect: 'fadeToggle',
+	speed: 300
+});
+
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
