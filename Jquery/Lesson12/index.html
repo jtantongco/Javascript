@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Full Own Effects with Animate</title>
+	<style>
+	.box {
+		width: 400px;
+		background: red;
+		padding: 2em;
+		position: relative;
+		/* the next line must be here for CSS transistions */
+		-webkit-transition: border-radius 1s;
+		/* 
+		remember to test that these are present in the web browser (firefox, chrome, opera, IE, etc.)
+		use websites like http://prefixmycss.com/ or http://cssprefixer.appspot.com/ to check	
+		*/
+        -moz-transition:border-radius 1s;
+        -ms-transistion:border-radius 1s;   /* this line from lesson not sites */
+          -o-transition:border-radius 1s;
+             transition:border-radius 1s;
+	}
+	
+	.rounded{
+		border-radius: 50px;
+	}
+	</style>
+</head>
+<body>
+
+<div class=box>
+<article>
+	<h2>Some content here</h2>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		<span class=co>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt <span class=co>ut labore et dolore magna aliqua.</span> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+</article>
+</div>
+
+<p><button id="increase">Increase</button></p>
+<p><button id="decrease">Decrease</button></p>
+<p><button id="sup">Surprise</button></p>
+<p><button id="center">Center</button></p>
+<p><button id="border">Border</button></p>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	
+<script>
+/*
+var box = $('div.box');
+
+//button will increase font size of box when clicked
+$('button#increase').on('click',function(){ //look for html tag button with id increase
+	//hard coded single case
+    //$('div.box').css('font-size', '25px'); //look for html tag div with class box\
+	//equivalent
+	box.css('font-size', '25px');
+});
+*/
+
+/* Long hand
+//No global variables
+(function(){
+
+//error on fontSize
+//var box = $('div.box'), fontSize = box.css('font-size');
+
+var box = $('div.box'), fontSize = parseInt( box.css('font-size'), 10);
+
+
+//will run on function invocation (startup)
+//prints initial fontSize
+console.log(fontSize);
+//prints type of fontSize
+console.log(typeof fontSize); //string -> need to convert string to integer
+
+$('button#increase').on('click',function(){
+	box.css('font-size', fontSize += 5); //change the fontSize variable at the same time as returning that value
+});
+
+$('button#decrease').on('click',function(){
+	box.css('font-size', fontSize -= 5);
+});
+
+})();
+*/
+
+//Short hand
+(function(){
+var box = $('div.box'), 
+	duration=2000, 
+	// centerWinWidth = $(window).width() / 2 - box.width()/2; //does not take in padding
+	w =  $(window).width() / 2 - box.outerWidth() / 2,
+	h =  $(window).height() / 2 - box.outerHeight() / 2
+
+/*
+//prints the width of the window
+console.log(w);
+*/
+
+$('button#increase').on('click',function(){
+	/*
+	//add changes in color -> + color method stacking *this is bad*
+	//box.css('font-size', '+=5').css('color','white');
+	box.css({ //instant change in property
+		'fontSize':'+=5',
+		'color':'white'
+	});
+	*/
+	/*
+	box.animate({ //animate change in property incrementally
+		'fontSize':'+=5', //can only animate the fontsize
+		'color':'white', //to animate color -> need css transistions or Jquery plugin
+		'width':'+=300'
+	}); //too fast? default animation time is ~400ms, default animation time is swing
+	//There are options like linear (same pace of animation all the way through
+	// for more options -> Search easeIn Jquery plugin
+	// can also trigger call back (function triggers as soon as animation finishes
+	*/
+	box.animate({ //animate change in property incrementally
+		'fontSize':'+=5', //can only animate the fontsize
+		'color':'white', //to animate color -> need css transistions or Jquery plugin
+		'width':'+=300'
+	}, duration, 'swing', function(){
+		console.log('completed');
+	}); //animates over 3 seconds
+});
+
+$('button#decrease').on('click',function(){
+	//alternate animation method syntax (equivalent)
+	box
+		.animate({
+			'fontSize':'-=5',
+			'color':'black',
+			'width':'-=300'
+		},{
+		'duration':duration,
+		'complete':function(){
+			console.log('completed');
+		}, //called at end of animation
+		'step':function(){
+			//console.log(this); -> referes to the object being animated
+			console.log('The current font-size is' + $(this).css('fontSize') );
+		} //called on each step of animation
+	});
+});
+/*
+$('button#sup').on('click',function(){
+	box 
+		.animate({
+			'fontSize':'+=5'
+		},{'duration':duration})
+		//.animate({'fontSize':'+=10'},3000);
+		.animate({'top':500},3000);//more obvious queing -> be careful of context and relative position
+}); //syntax like above will queue animations -> equivalent queue is true
+*/
+
+//two simultaneous animations under different time constraints? -> set queue fields to false!
+$('button#sup').on('click',function(){
+	box 
+		.animate({
+			'fontSize':'+=5'
+		},{'duration':duration})
+		.animate({
+			'top':500
+			},{ duration:3000,queue:false});
+});
+
+$('button#center').on('click',function(){
+	/*
+	box.animate({
+		'left':w,
+		'top':h,
+		'position':'absolute' //for trying to take into account the margin of the body -> gonna move stuff around.
+	}); //solve by containing important stuff in other divs and not just free floating DOM objects 
+	*/
+	
+	//remember about queuing and dequeuing
+	box
+	.animate({
+		'left':w,
+		'position':'absolute'
+		}, duration)
+	.animate({
+		'top':h
+		}, duration);  
+});
+
+$('button#border').on('click',function(){
+	/*
+	//2 ways of doing the same thing
+	box
+		.animate({
+			'borderRadius':50
+		}, duration);  
+	*/	
+	//add class
+	//do it CSS3
+	box
+		.addClass('rounded');
+
+});	
+	
+})();
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
