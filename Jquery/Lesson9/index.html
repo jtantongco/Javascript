@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>This keyword</title>
+	<style>
+
+	</style>
+</head>
+<body>
+<article>
+	<h1>My Awesome Post</h1>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		<span class=co>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt <span class=co>ut labore et dolore magna aliqua.</span> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+</article>
+
+<a href="http://tutplus.com">Click Me</a>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script>
+//this is the window
+//console.log(this);
+
+/* doSomething only body for outside function Call
+//A
+//this is the window
+doSomething();
+
+//A
+function doSomething(){
+	//this is the window
+	console.log(this);
+}
+*/
+
+/*
+//B
+$('a').on('click', doSomething);
+
+//B
+function doSomething(e){
+	e.preventDefault();
+	//console.log(e); //event details
+	console.log(this); //<a> tag
+}
+*/
+/* C
+var obj = {
+	doIt:function(e){
+		e.preventDefault();
+		console.log(this); //still refers to the a tag
+	}
+}
+
+$('a').on('click', obj.doIt);
+*/
+/* D/E/F
+var obj = {
+	doIt:function(e){
+		console.log(this); //refers to obj Object
+	}
+}
+//D
+$('a').on('click', function(e){
+	obj.doIt();
+	e.preventDefault(); //Can be placed at bottom or top of function call
+});
+
+//E
+$('a').on('click', function(e){
+	//this is the anchor tag
+	obj.doIt.call(this); //force this in doit to be the anchor tag
+	//can pass the event object too:
+	//obj.doIt.call(this, e);
+	e.preventDefault(); //Can be placed at bottom or top of function call
+});
+
+//F
+$('a').on('click', function(e){
+	//difference between call and apply: pass in variables as an array
+	obj.doIt.apply(this , []); //force this in doit to be the anchor tag 
+	// -> need to find filled in example
+	e.preventDefault(); 
+});
+*/
+
+//G
+var obj = {
+	doIt:function(e){
+		console.log(this); //refers to obj Object
+		e.preventDefault();
+	}
+}
+
+$('a').on('click', $.proxy(obj.doIt, obj) ); // first argument is method 
+//second argument is value of this
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

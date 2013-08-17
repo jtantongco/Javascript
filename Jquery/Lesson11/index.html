@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Own Effects</title>
+	<style>
+	p {margin-top:0}
+	</style>
+</head>
+<body>
+<h1>Reveal</h1>
+
+<div class=content>
+<article>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		<span class=co>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt <span class=co>ut labore et dolore magna aliqua.</span> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+</article>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	
+<script>
+//always place everything in a self invoking anonymous function to prevent global status
+(function(){
+
+//div optimization:
+var content = $('div.content').hide();
+//console.log(content);
+
+//$('div.content').hide();
+//content.hide();
+
+jQuery.fn.flash = function( speed, easing, callback ) {
+	/*
+	//$(this).slideDown(500);
+	//how to get staged execution?
+	//pass code as next function
+	$(this).slideDown(500, function(){
+		$(this).delay(2000).slideUp(500); //static delay time
+	});
+	*/
+	
+	//caching optimization:
+	var $this = $(this);
+	$this.slideDown(500, function(){
+		$this.delay(2000).slideUp(500); //static delay time
+	});
+	
+	//return this.animate( props, speed, easing, callback );
+};
+
+$('h1').on('click', function (){
+	//What if you add somthing between h1 and content?
+	//$(this).next('div.content').flash();
+	content.flash();
+});
+
+})();
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
