@@ -1,0 +1,15 @@
+body{
+	width:600px;
+	margin:100px auto 0;
+}
+
+img{
+	height: 300px;
+	width: 600px;
+}
+
+/* zeroes anyting else out */
+* {
+	margin:0;
+	padding:0;
+}
