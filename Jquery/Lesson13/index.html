@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Full Own Effects with Animate</title>
+	<style>
+	.box {
+		width: 400px;
+		background: red;
+		padding: 2em;
+		position: relative;
+      overflow:hidden; /* need this property to keep it from showingup once you have minimized */
+	}
+	
+	.rounded{
+		border-radius: 50px;
+	}
+	</style>
+</head>
+<body>
+
+<div class=box>
+<article>
+	<h2>Some content here</h2>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		<span class=co>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+	
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt <span class=co>ut labore et dolore magna aliqua.</span> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.
+	</p>
+</article>
+</div>
+
+<p><button id="fadeSlide">fadeSlide</button></p>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	
+<script>
+(function(){
+var box = $('div.box'), duration = 500;
+var open = false;
+
+/*
+$.fn.fadeSlideToggle = function(){
+	//console.log('fadeSlide');
+   //fadeToggle -> opacity
+   //slideToggle -> height
+   //alternately $(this).animate //which at run time would refere to the box
+   //box.animate({
+	//					'height':'toggle', //instead of hard code value of 0 -> box will still exist as a element on the page
+	//					'opacity':'toggle' //pass jquery value of toggle
+	//				},{
+	//					'duration':duration
+	//				}); 
+   //what is wrong with this solution? -> cannot chain after!
+   //crashes lines of code like: $('.box').fadeSlideToggle().addClass('rounded');
+   //soln? always return the Jquery object! 
+   
+	return box.animate({
+								'height':'toggle', //instead of hard code value of 0 -> box will still exist as a element on the page
+								'opacity':'toggle' //pass jquery value of toggle
+							},{
+								'duration':duration //duration is tied to a closure variable 
+							}); 
+};
+*/
+
+/*
+//say I want a configurable animation
+$.fn.fadeSlideToggle = function(speed){
+//	return box.animate({
+//								'height':'toggle', //instead of hard code value of 0 -> box will still exist as a element on the page
+//								'opacity':'toggle' //pass jquery value of toggle
+//							},{
+//								'duration':speed
+//							}); 	
+	return box.animate({
+								'height':'toggle', 
+								'opacity':'toggle' 
+							},{
+								'duration':speed || 400 //this is how you set the default value of a variable
+							}); 	
+};
+*/
+
+//say I want a configurable animation with callback
+$.fn.fadeSlideToggle = function(speed, fn){
+//	return box.animate({
+//								'height':'toggle', 
+//								'opacity':'toggle' 
+//							},{
+//								'duration':speed || 400
+//							}, function(){
+//								//Pass the function as the callback of animate where the function body is the execution of fn
+//								fn(); //Why doesnt this work? -> function bodies with () are evaluated immediately (eager)
+//							}); 
+
+//	return box.animate({
+//								'height':'toggle', 
+//								'opacity':'toggle' 
+//							}, speed || 400, fn 
+//							); // can no longer pass the object fields for fn 
+                     //Why isnt this full correct?
+							//what if fn is undefined? this ok if it crashes but for for style resolved as above.
+   						//use built in detector method of Jquery isFunction()
+
+	//Final solution
+	return box.animate({
+								'height':'toggle', 
+								'opacity':'toggle' 
+							}, speed || 400, function(){ 
+								$.isFunction(fn) && fn.call(this); //fn.call will only execute if fn is a function
+								//this removes ambiguity of reference
+							}); 
+};
+
+$('button#fadeSlide').on('click', function(){
+	//All calls should work
+	//$('.box').fadeSlideToggle(); //note: if no value is passed in -> jquery will use the default
+	//$('.box').fadeSlideToggle().addClass('rounded');
+	//$('.box').fadeSlideToggle(500); 
+   
+   $('.box').fadeSlideToggle(2000,function(){ //should be able to handle callbacks
+		console.log('Finished!');
+   });
+});
+
+})();
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
