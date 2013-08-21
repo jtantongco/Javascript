@@ -1,0 +1,27 @@
+#slider-nav{
+	display:none;
+	margin-top:1em;
+}
+
+#slider-nav button{
+	padding: 1em;
+	margin-right: 1em;
+	border-radius:10px;
+	cursor:pointer;
+}
+
+.slider{
+	width:inherit;
+	height:300px;
+	overflow:scroll; /*if you just want to let sidescroll through images */
+	/* if user has no javascript this should be their option */
+}
+
+.slider ul{
+	width:10000px; /* pictures exist and it is 10000 px but can't scroll to them */
+	list-style:none;
+}
+
+.slider li{
+	float:left;
+}
