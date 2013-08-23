@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Q&A</title>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<a href="http://tutsplus.com" class="myClass">Click me</a>
+
+<script id="blogTemplate" type="tuts/template">
+	<h2>{{title}}</h2>
+	<img src={{thumbnail}} alt={{title}} />
+</script>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+(function(){
+	//array of objects:
+	var content = [
+		{
+			title: 'My awesome blog post',
+			thumbnail: 'img/img1.jpg'
+		},{
+			title: 'My second awesome blog post',
+			thumbnail: 'img/img2.jpg'
+		}
+	], //content simulates a JSON response
+		//get the html in the template
+		template = $.trim( $('#blogTemplate').html() ) //trim removes whitespace at beginning and end
+	, 
+		frag = "";
+	//console.log(template);
+
+	//Want to replace {{title}} with title field, and etc.
+
+	$.each(content, function(index,obj){
+		//console.log(index);
+		//console.log(obj);
+		/*
+		var temp = template.replace( /{{title}}/ig , obj.title )
+							.replace(/{{thumbnail}}/ig, obj.thumbnail); 
+		//i flag -> uppper and lowercase
+		//g flag -> global -> multi instance and not just the first instance
+
+		//console.log(temp);
+		$(document.body).append(temp); //performance issue if content is long (50+ items)
+		//better to build up a string and add to the DOM once
+		*/
+		//refactor:
+		
+		frag += template.replace( /{{title}}/ig , obj.title )
+						.replace(/{{thumbnail}}/ig, obj.thumbnail); 
+		
+		console.log(frag);
+	});
+
+	$(document.body).append(frag);
+
+})();
+</script>
+
+</body>
+</html>

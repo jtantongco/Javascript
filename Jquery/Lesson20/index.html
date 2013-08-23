@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Change the Title</title>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/handlebars.js"></script>
+
+
+<script type="text/javascript">
+//grep is filter
+//signature: collection, function, boolean (invert boolean from function)
+(function (){
+	var arr = [1,2,3,4,5,6,7,8,9,10];
+	
+	var greaterThan5 = $.grep( arr, function(val, index) {
+		return (val > 5);
+	}); // collection, function, boolean (is inverted or not?)
+	console.log(greaterThan5);
+
+	var evenIndexedItems = $.grep(arr,function(val, index){
+		return (index % 2 == 0);
+	});
+	console.log(evenIndexedItems);
+
+	var reversedEvenIndexedItems = $.grep(arr,function(val, index){
+		return (index % 2 == 0);
+	}, true); //inverts the boolean function
+	console.log(reversedEvenIndexedItems);
+
+	var peeps = [
+	{
+		first:'Jeremiah',
+		last:'Tantongco'
+	},
+	{
+		first:'Rojan',
+		last:'Suleyman'
+	},
+	{
+		first:'Joshua',
+		last:'Tantongco'
+	},
+	{
+		first:'Cassidy',
+		last:'Warn'
+	}
+	];
+
+	var family = $.grep(peeps, function(val, index){
+		return val.last === 'Tantongco';
+	});
+	console.log(family);
+
+})();
+</script>
+
+</body>
+</html>

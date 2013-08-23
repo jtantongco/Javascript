@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Weak sauce faking it</title>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<a href="http://tutsplus.com" class="myClass">Click me</a>
+
+
+<ul class="tweets">
+	<script id="tweets-template" type="text/x-handlebars-template">
+		{{#each this}} 
+		<li>
+			<h1>{{author}} : {{id}}</h1>
+			<img src="{{thumb}}" alt="{{author}}">
+
+			<p><a href="{{url}}">{{{tweet}}}</a></p> 
+		</li>
+		{{/each}}
+	</script>
+</ul>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/handlebars.js"></script>
+
+<script type="text/javascript">
+(function(){
+	//Tutorial relies on Twitter 1.0 API
+	//Twitter at 1.1 API which requires OAuth and changed url
+	//generates a similar error but cannot simulate Twitter callback API solution
+	//I faked and just took it as a lesson in structing code
+	
+	//build the fake json
+	var tweet1 = {id: 1000001, from_user:'Morpheus' , profile_image_url: 'img/img1.jpg', text:'morph', noise:'1'};
+	var tweet2 = {id: 1000002, from_user:'Zeus' 	, profile_image_url: 'img/img2.jpg', text:'immortality', noise:'2'};
+	var tweet3 = {id: 1000003, from_user:'Zorg' 	, profile_image_url: 'img/img1.jpg', text:'cycle', noise:'3'};
+
+	var simulation = {
+		timestamp:'a',
+		header:'b',
+		etc:'c',
+		results:[tweet1,tweet2,tweet3]
+	}
+	//console.log(simulation);
+
+	var Twitter = {
+		init:function(config){
+			this.url = config.url; //meaningless line: used in json call but json call broken
+			this.template = config.template;
+			this.container = config.container;
+
+			this.fetch();
+			//if this were using json -> there would be synconicity issue on the lines after
+			//it could force execution of following lines before the end of the json request
+			//change with json arguments
+			//console.log('after fetch');
+
+			//solution?
+			// $.when( ajaxRequest ).then( doStuff ); ie Queue execution
+		}, 
+		attachTemplate: function(){
+			//ensure object access
+			console.log(this.tweets);
+
+			var template = Handlebars.compile( this.template );
+			var html = template(this.tweets);
+			this.container.append(html);
+		},
+		fetch:function(){
+			var self = this; //cache the Twitter object
+			//can't use the line:
+			//$.getJSON( this.url , function( data ){
+			/* magic line here where simulation starts "existing" */
+			self.tweets = $.map(simulation.results, function( tweet ) {
+				return {
+					author: tweet.from_user,
+					tweet:	tweet.text,
+					thumb: 	tweet.profile_image_url,
+					url: "http://dictionary.reference.com/browse/"+tweet.text+"s=t",
+					//twitter would use the id, and author as part of the url but for me:
+					// its just the word definition that was in the "tweet"
+					// will id field forward instead 
+					id: tweet.id,
+
+				};
+			});
+
+			//bind data -> ideally in design one method shouldn't do this much
+			self.attachTemplate();
+		}
+	};
+
+	Twitter.init({
+		template: $('#tweets-template').html(),
+		container: $('ul.tweets'),
+		url: 'sample.json'
+	});
+
+})();
+
+
+</script>
+
+</body>
+</html>

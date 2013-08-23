@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Handlebar.js</title>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+
+<ul class="tweets">
+	<script id="template" type="text/x-handlebars-template">
+		{{#each this}} 
+		<li>
+			<h2>{{fullName author}}</h2>
+			
+			<p>{{{tweet}}}</p> 
+
+			{{#if quote}}
+				<h5>{{{quote}}}</h5>
+			{{else}}
+				<h5>Author has no quote</h5>
+			{{/if}}
+		</li>
+		{{/each}}
+	</script>
+</ul>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/handlebars.js"></script>
+<!-- Not executable: https://raw.github.com/wycats/handlebars.js/1.0.0/dist/handlebars.js -->
+<script type="text/javascript">
+(function(){
+	/* First running
+	var data = {
+			author: 'Jeremiah Tantongco',
+			tweet: '30 Days to Learn JQuery Rocks'
+	};
+	
+	//Handlebars, give me a function that will taken in an array
+	//this function will go through the array replacing the keys with the values
+	var template = Handlebars.compile( $('#template').html() );
+	//console.log(template);
+
+	//call the function
+	var temp = template(data);
+	//console.log(temp);
+
+	//display the results
+	//append to the body
+	//$(document.body).append(temp);
+	
+	//append to the ul
+	$('ul.tweets').append(temp);
+	//Equivalently:  
+	//$('ul.tweets').append( template(data) );
+	*/
+
+	/* First running template body:
+		<li>
+			<h2>{{author}}</h2>
+			<p>{{tweet}}</p>
+		</li>
+	*/
+
+	//second running
+	//an array instead of a single item
+	/*
+	var data = [
+		{
+			author: 'Jeremiah Tantongco',
+			tweet: '30 Days to Learn JQuery Rocks', 
+			age: 25 //optional fields
+		},
+		{
+			author: 'Mojo Jojo',
+			tweet: '<strong>30 Days</strong> to Learn JQuery Rocks',
+			//problem with HTML directly in field, will appear as text
+			//see note*
+			quote: 'Zaboodesorot'
+		}
+	];
+	
+	var template = Handlebars.compile( $('#template').html() );
+	var temp = template(data);
+	$('ul.tweets').append(temp);
+	*/
+
+	/* Second Running template body
+	<!-- this binds to each array item -->
+	{{#each this}} 
+	<li>
+		<h2>
+			{{author}} 
+			{{#if age}}<span>- {{age}}<span>{{/if}} <!-- Conditional Rendering -->
+		</h2>
+		<p>{{tweet}}</p>
+		<p>{{{tweet}}}</p> <!-- To make it render html in field: use 3 set curly braces -->
+
+		<!-- 
+		Conditional Rendering 2
+		"if(! boolean)" === "unless()" syntactically -->
+		<!--
+		{{#unless quote}} 
+			<h5>Author has no quote</h5>
+		{{/unless}}
+		-->
+
+		{{#if quote}}
+			<h5>{{{quote}}}</h5>
+		{{else}}
+			<h5>Author has no quote</h5>
+		{{/if}}
+	</li>
+	{{/each}}
+	*/
+
+	var data = [
+		{
+			author: {first: 'Jeremiah',last: 'Tantongco', age:25},
+			tweet: '30 Days to Learn JQuery Rocks', 
+		},
+		{
+			author: {first: 'Mojo',last: 'Jojo'},
+			tweet: '<strong>30 Days</strong> to Learn JQuery Rocks',
+			quote: 'Zaboodesorot'
+		}
+	];
+
+	Handlebars.registerHelper('fullName', function(author){
+		authorInfo = author.first + ' ' + author.last;
+		if(author.age)
+			authorInfo += ' - ' + author.age;
+		return authorInfo;
+	});
+
+	var template = Handlebars.compile( $('#template').html() );
+	var temp = template(data);
+	$('ul.tweets').append(temp);
+})();
+/*
+$(document).ready(function(){}); vs anonymous invoking functions
+the one on the left should be used if javascript is positioned above the declartion of the elements 
+(the headers)
+*/
+
+
+</script>
+
+</body>
+</html>
