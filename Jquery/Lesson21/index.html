@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Custom Events and Observer Pattern</title>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<h1> Hi There </h1>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/handlebars.js"></script>
+
+
+<script type="text/javascript">
+/*
+$('body').on('click', function() {
+	console.log('clicked');
+});
+
+$('body').on('app/Rolling', function(){
+	console.log('Stones');
+});
+
+//Manually trigger an event (argument is event type)
+$('body').trigger('click');
+$('body').trigger('app/Rolling'); //convention is app/XYZ
+*/
+
+//Execution 1
+/*
+var data; 
+
+(function(){
+	//As in lesson 19 - Twitter API is off limits so simulate jsonResponse
+	var jsonResp = [
+		{
+			author: {first: 'Jeremiah',last: 'Tantongco', age:25},
+			tweet: '30 Days to Learn JQuery Rocks', 
+		},
+		{
+			author: {first: 'Mojo',last: 'Jojo'},
+			tweet: '<strong>30 Days</strong> to Learn JQuery Rocks',
+			quote: 'Zaboodesorot'
+		}
+	];
+
+	function jsonCallback(results){
+		// Execution 1
+		//console.log(results);
+		data = results;
+		//End of Execution 1
+	}
+
+	jsonCallback(jsonResp);
+
+})();
+
+//Execution 1
+//technically this wouldn't work if jsonCall were an actual callback so have to code in a slightly different way
+console.log(data);
+//End of Execution 1
+*/
+
+//Execution 2
+//e is for event and then results is the passed results
+/*
+(function(){
+	var jsonResp = [
+		{
+			author: {first: 'Jeremiah',last: 'Tantongco', age:25},
+			tweet: '30 Days to Learn JQuery Rocks', 
+		},
+		{
+			author: {first: 'Mojo',last: 'Jojo'},
+			tweet: '<strong>30 Days</strong> to Learn JQuery Rocks',
+			quote: 'Zaboodesorot'
+		}
+	];
+
+
+
+	function jsonCallback(results){
+		//do some processing
+
+		//Publish Design pattern
+		$(document).trigger('twitter/results', results);
+		console.log('Event fired');
+	}
+
+	//Subscriber/Observer Pattern
+	$(document).on('twitter/results', function(e, result){
+		console.log(result);
+	});
+
+	//multiple observers
+	$(document).on('twitter/results', function(e, result){
+		console.log(e);
+	});
+
+	//Must make this call AFTER the definition of the handler
+	jsonCallback(jsonResp);
+})();
+*/
+//End of Execution 2
+
+
+//Execution 3
+(function($){ //always refer to jQuery
+	var o = $({}); //instance of Jquery
+	//console.log(o); toString of Jquery
+
+	$.each({
+		trigger: 'publish',
+		on: 'subscribe',
+		off: 'unsubscribe'
+	}, function(key, val){
+		//note: 
+		//$(document).on('click', function(){...}) 
+		//is the same as 
+		//$(document)[on]('click', function(){...})
+		jQuery[val] = function(){
+			/*
+			console.log('In inheritance of Jquery');
+			console.log(key);
+			console.log('values');
+			console.log(arguments);
+			*/
+			o[key].apply( o, arguments); 
+
+			//call: invoke the function with parameters
+			//apply: invoke the function with parameters as an array
+		};
+	});
+})(jQuery);
+
+(function(){
+	//Datastructure to simulate JSON should have been like this
+	//Like this from now on but I am letting the ones before it go
+	var jsonResp = {results:[
+		{
+			author: {first: 'Jeremiah',last: 'Tantongco'},
+			tweet: '30 Days to Learn JQuery Rocks', 
+			quote: 'Learn it well'
+		},
+		{
+			author: {first: 'Mojo',last: 'Jojo'},
+			tweet: 'Crash Bandicoot is a fun game.',
+			quote: 'Zaboodesorot'
+		},
+	]};
+
+	function jsonCallback(results){
+		//do some processing
+
+		//Publish Design pattern
+		$.publish('twitter/results', results);
+		//console.log('Event fired');
+	}
+
+	//Subscriber/Observer Pattern
+	$.subscribe('twitter/results', function(e, results){
+		//console.log(e);
+		//console.log(results);
+		var tweets = $.map(
+			results.results, function(obj, index){
+				return '<li>' + obj.tweet + '</li>'; } ).join('');
+		$('body').html( tweets );
+		});
+
+	//Must make this call AFTER the definition of the handler
+	jsonCallback(jsonResp);
+})();
+//End of Execution 3
+
+//Cannot complete the last section (17 minutes onward) as it deals with Twitter
+</script>
+
+</body>
+</html>
