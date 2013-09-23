@@ -8,8 +8,10 @@ The code will be focused on Javascript and other technologies with Javascript.
 The following is a list of technologies with code examples:
 
 1. Jquery*
+2. Handlebars**
 
 *Initially, code from Jquery will be based on Net tut's offering of Learn Jquery in 30 days
+**Some code examples are in the Jquery folder (Certain lessons: 18+)
 
 Code may not exactly match the class tutorials as the course was first offered in 2012
 
