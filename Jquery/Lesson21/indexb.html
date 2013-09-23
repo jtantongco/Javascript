@@ -15,7 +15,11 @@
 <script type="text/javascript">
 var timer;
 function endAndStartTimer(){
-	clearTimeout(timer);	
+	/*
+	window.clearTimeout & window.setTimeout
+	Native Javascript functionality
+	*/
+	clearTimeout(timer);
 	timer = setTimeout(function(){
 		alert('Hello!');
 	}, 5000);
